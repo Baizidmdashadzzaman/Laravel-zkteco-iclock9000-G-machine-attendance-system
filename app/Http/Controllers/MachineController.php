@@ -14,19 +14,29 @@ class MachineController extends Controller
      */
     public function device_ip()
     {
-        $deviceip = '192.168.1.104';
+        
+        if (session()->exists('dip')) {
+            $deviceip = session('dip');
+        }
+        else
+        {
+            session()->put('dip', '192.168.1.100');
+            $deviceip = '192.168.1.100';
+        }
         return $deviceip;
+    }
+    public function device_setip(Request $request)
+    {
+        session()->put('dip', $request->deviceip);
+        return redirect()->back();
     }
     public function index()
     {
         $deviceip = $this->device_ip();
-
         // $zk = new ZKTeco($deviceip,4370);
         // $zk->connect(); 
-        // $zk->disableDevice();  
-        // $users = $zk->getUser();
-        // $attendace = $zk->getAttendance();
-        // $zk->testVoice(); 
+        // $user=$zk->getFingerprint(4); 
+        // dd($user);
         return view('welcome',compact('deviceip'));
         //dd($attendace);
     }
@@ -87,6 +97,38 @@ class MachineController extends Controller
 
         return redirect()->back();
     }
+
+    public function device_restart()
+    {
+        $deviceip = $this->device_ip();
+
+        $zk = new ZKTeco($deviceip,4370);
+        $zk->connect(); 
+        $zk->disableDevice();  
+        $zk->restart();
+
+        return redirect()->back();
+    }
+
+    public function device_shutdown()
+    {
+        $deviceip = $this->device_ip();
+
+        $zk = new ZKTeco($deviceip,4370);
+        $zk->connect(); 
+        $zk->disableDevice();  
+        $zk->shutdown();
+
+        return redirect()->back();
+    }
+
+    public function device_adduser()
+    {
+        $deviceip = $this->device_ip();
+        return view('device-adduser',compact('deviceip'));
+        //dd($attendace);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

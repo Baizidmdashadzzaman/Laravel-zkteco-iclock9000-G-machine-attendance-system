@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     </head>
     <body class="antialiased bg-gray-100 dark:bg-gray-900 ">
-        <br/><br/><br/>
+        <br/>
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -64,6 +64,18 @@
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <img src="{{ asset('machine.jpg') }}" style="width: 100%;"/>
                                 </div>
+                                <br/>
+                                <form action="{{ route('machine.devicesetip') }}" method="post">
+                                    @csrf
+                                <div class="row">
+                                    <div class="col-9">
+                                        <input type="text" name="deviceip" class="form-control" required />
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-success btn-block">Set IP</button>
+                                    </div>
+                                </div>
+                                </form>
                             </div>
                         </div>
 
@@ -75,18 +87,18 @@
 
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    iClock9000-G is an innovative product featured with ZK advanced fingerprint
+                                    <b>iClock9000-G</b> is an innovative product featured with ZK advanced fingerprint
                                     recognition technologies. It supports multiple verification methods including
                                     fingerprint, card, password, combinations between them and basic access control
                                     functions. User verification is performed in less than 1 second, which streamlines the process of access.
-                                    
-                                    The communication between the iClock9000-G and PC is by TCP / IP or USB
-                                    interface for manual data transfer. Its sleek design fits perfectly in any environment.iClock9000-G is an innovative product                                     featured with ZK advanced fingerprint recognition technologies. It supports multiple verification methods including
+                                    <br/><br/>
+                                    The communication between the <b>iClock9000-G</b> and PC is by TCP / IP or USB
+                                    interface for manual data transfer. Its sleek design fits perfectly in any environment.<b>iClock9000-G</b> is an innovative product featured with ZK advanced fingerprint recognition technologies. It supports multiple verification methods including
                                     fingerprint, card, password, combinations between them and basic access control
                                     functions.
-                                    
+                                    <br/>
                                     User verification is performed in less than 1 second, which streamlines the process of
-                                    access. The communication between the iClock9000-G and PC is by TCP / IP or USB
+                                    access. The communication between the <b>iClock9000-G</b> and PC is by TCP / IP or USB
                                     interface for manual data transfer. Its sleek design fits perfectly in any environment.
                                 </div>
                             </div>
@@ -99,9 +111,19 @@
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <a href="{{ route('machine.testsound') }}" class="btn btn-success" style="margin: 5px">Test device sound</a>
+
                                     <a href="{{ route('machine.deviceinformation') }}" class="btn btn-success" style="margin: 5px">Device information</a>
+
                                     <a href="{{ route('machine.devicedata') }}" class="btn btn-success" style="margin: 5px">Device data</a>
+
                                     <a href="{{ route('machine.devicedata.clear.attendance') }}" class="btn btn-success" style="margin: 5px">Clear attendance</a>
+
+                                    <a href="{{ route('machine.devicerestart') }}" class="btn btn-success" style="margin: 5px">Restart device</a>
+
+                                    <a href="{{ route('machine.deviceshutdown') }}" class="btn btn-success" style="margin: 5px">Shutdown device</a>
+
+                                    <a href="{{ route('machine.deviceadduser') }}" class="btn btn-success" style="margin: 5px">Add user to device</a>
+
                                 </div>
                             </div>
                         </div>
