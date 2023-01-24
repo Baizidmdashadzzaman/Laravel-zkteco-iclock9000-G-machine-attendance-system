@@ -33,23 +33,16 @@ class MachineController extends Controller
     public function index()
     {
         $deviceip = $this->device_ip();
-        // $zk = new ZKTeco($deviceip,4370);
-        // $zk->connect(); 
-        // $user=$zk->getFingerprint(4); 
-        // dd($user);
         return view('welcome',compact('deviceip'));
-        //dd($attendace);
     }
     public function test_sound()
     {
         $deviceip = $this->device_ip();
-
         $zk = new ZKTeco($deviceip,4370);
         $zk->connect(); 
         $zk->disableDevice();  
         $zk->testVoice(); 
-
-        return redirect()->back();
+        return redirect()->back()->with('success_message','Playing sound on device.');
     }
 
     public function device_information()
@@ -95,7 +88,7 @@ class MachineController extends Controller
         $zk->disableDevice();  
         $zk->clearAttendance();
 
-        return redirect()->back();
+        return redirect()->back()->with('success_message','Attendance cleared successfully.');
     }
 
     public function device_restart()
@@ -107,7 +100,7 @@ class MachineController extends Controller
         $zk->disableDevice();  
         $zk->restart();
 
-        return redirect()->back();
+        return redirect()->back()->with('success_message','Device restart successfully.');
     }
 
     public function device_shutdown()
@@ -126,72 +119,65 @@ class MachineController extends Controller
     {
         $deviceip = $this->device_ip();
         return view('device-adduser',compact('deviceip'));
-        //dd($attendace);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function device_setuser(Request $request)
     {
-        //
+       $deviceip = $this->device_ip();
+       $uid = $request->uid;
+       $userid = $request->userid;
+       $name = $request->name;
+       $role = (int)$request->role;
+       $password = $request->password;
+       $cardno = $request->cardno;
+       //dd($request->role);
+       $zk = new ZKTeco($deviceip,4370);
+       $zk->connect(); 
+       $zk->disableDevice();  
+       $zk->setUser($uid , $userid , $name , $role , $password , $cardno);
+
+       return redirect()->back()->with('success_message','User added to device successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function device_removeuser_single($uid)
     {
-        //
+        $deviceip = $this->device_ip();
+        $zk = new ZKTeco($deviceip,4370);
+        $zk->connect(); 
+        $zk->disableDevice();  
+        $zk->removeUser($uid);
+
+        return redirect()->back()->with('success_message','User removed from device successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function device_viewuser_single(Request $request)
     {
-        //
-    }
+        $deviceip = $this->device_ip();
+        $uid = $request->uid;
+        $userid = $request->userid;
+        $name = $request->name;
+        $role = (int)$request->role;
+        $password = $request->password;
+        $cardno = $request->cardno;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $zk = new ZKTeco($deviceip,4370);
+        $zk->connect(); 
+        $userfingerprints=$zk->getFingerprint($request->uid);
+        
+        // foreach($userfingerprints as $userfingerprint)
+        // {
+        //     $imagearray= unpack("C*",$userfingerprint); 
+        // }
+        // $data = implode('', array_map(function($e) {
+        //     return pack("C*", $e);
+        // }, $$userfingerprint));
+        // echo $data;
+        // dd($data);
+        
+        //dd($userfingerprints);
+        return view('device-information-user',compact(
+            'deviceip','uid','userid','name',
+            'role','password','cardno','userfingerprints',
+        ));
     }
 }

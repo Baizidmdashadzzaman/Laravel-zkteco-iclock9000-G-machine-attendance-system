@@ -24,11 +24,13 @@ Route::get('/device-shutdown', [MachineController::class, 'device_shutdown'])->n
 Route::get('/device-sleep', [MachineController::class, 'device_sleep'])->name('machine.devicesleep');
 Route::get('/device-resume', [MachineController::class, 'device_resume'])->name('machine.deviceresume');
 Route::get('/device-settime', [MachineController::class, 'device_settime'])->name('machine.devicesettime');
-Route::get('/device-clearuser-all', [MachineController::class, 'device_clearuser_all'])->name('machine.deviceclearuserall');
-Route::get('/device-clearuser-single', [MachineController::class, 'device_clearuser_single'])->name('machine.deviceclearusersingle');
+
 Route::post('/device-setip', [MachineController::class, 'device_setip'])->name('machine.devicesetip');
 Route::get('/device-adduser', [MachineController::class, 'device_adduser'])->name('machine.deviceadduser');
 Route::post('/device-setuser', [MachineController::class, 'device_setuser'])->name('machine.devicesetuser');
+Route::get('/device-removeuser-all', [MachineController::class, 'device_removeuser_all'])->name('machine.deviceremoveuserall');
+Route::get('/device-removeuser-single/{id}', [MachineController::class, 'device_removeuser_single'])->name('machine.deviceremoveusersingle');
+Route::get('/device-viewuser-single/[id]', [MachineController::class, 'device_viewuser_single'])->name('machine.deviceviewusersingle');
 // Route::get('/', function () {
 //     return view('welcome');
 // });
